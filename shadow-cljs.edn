@@ -1,0 +1,15 @@
+{:source-paths ["src"]
+
+ :dependencies [[cider/cider-nrepl "0.22.4"]
+                [reagent "0.9.0-rc2"]]
+
+ :nrepl {:port 3333}
+
+ :builds
+ {:app
+  {:target :react-native
+   :init-fn reclojure.app/init
+   :output-dir "react-native/app"
+   :js-options {:js-package-dirs ["react-native/node_modules"]}
+   :devtools {:repl-init-ns reclojure.app
+              :repl-pprint true}}}}
