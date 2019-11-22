@@ -2,10 +2,16 @@
 
 For both iOS & Android.
 
+## To run the expo client
+
+Download "Expo" from the iOS App Store or Google Play Store.
+Login using reclojure/reclojure.
+
 ## How to develop
 
 ```
-$ npm install && cd react-native && npm install
+$ yarn global add expo-cli
+$ yarn install
 ```
 
 If you're into emacs:
@@ -22,25 +28,22 @@ Any other editor:
 $ shadow-cljs watch app
 ```
 
-### Start Metro
+### Start Metro (via expo)
 
 Then to load the app and start Metro (it'll start it in a separate tab
 of your terminal):
 
 ```
-$ react-native run-android
+$ expo-cli start --lan -c
 ```
-(Note: you'll need to start Android emulator first.)
 
+You can then press i to launch on iOS simulator, or a to launch on (an open) android emulator
 
-or
-
-```
-$ react-native run-ios
-```
 
 ## Production build
 
 ```
 $ shadow-cljs release app
+$ expo-cli build:android
+$ expo-cli build:ios
 ```

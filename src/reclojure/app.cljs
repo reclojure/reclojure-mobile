@@ -2,7 +2,9 @@
   (:require ["react-native" :as rn]
             ["react" :as react]
             ["create-react-class" :as crc]
-            ["react-navigation" :as react-navigation]
+            ["react-navigation" :as react-navigation :refer [createAppContainer]]
+            ["react-navigation-tabs" :as react-navigation-tabs :refer [createBottomTabNavigator]]
+            [shadow.expo :as shadow-expo]
             [reagent.core :as r]
             [reclojure.schedule :as schedule]))
 
@@ -14,10 +16,6 @@
 (def touchablewithoutfeedback (r/adapt-react-class (.-TouchableWithoutFeedback rn)))
 (def platform (.-Platform rn))
 (def link (.-Linking rn))
-(def app-registry (.-AppRegistry rn))
-
-(def create-tab-navigator (.-createBottomTabNavigator react-navigation))
-(def create-app-container (.-createAppContainer react-navigation))
 
 (defonce droit-img (js/require "../assets/droit.png"))
 (defonce cognitect (js/require "../assets/cognitect.png"))
@@ -44,11 +42,11 @@
     "Schedule"]
    [flatlist {:style {}
               :ListFooterComponent (r/as-element
-                                    [view {:style
-                                           {:padding-top
-                                            (if ios?
-                                              90
-                                              10)}}])
+                                     [view {:style
+                                            {:padding-top
+                                             (if ios?
+                                               90
+                                               10)}}])
               :bounces false
               :key (str (random-uuid))
               :initialNumToRender 20
@@ -64,29 +62,29 @@
                                             (js->clj :keywordize-keys true)
                                             :item)]
                                (r/as-element
-                                [view {:borderBottomColor "#bbb7b6"
-                                       :borderBottomWidth 1
-                                       :width "98%"
-                                       :paddingTop 20
-                                       :paddingBottom 10}
-                                 [text {:style {:font-size 14
-                                                :font-weight "bold"}} (:time data)]
-                                 [text {:style {:font-size 20}} (:title data)]
-                                 [text {} (:speaker data)]
-                                 [text {:style {:font-size 16}} (:description data)]
-                                 (when (contains? data :sponsor)
-                                   [view {:style {:flexDirection "row"
-                                                  :justify-content "flex-end"}}
-                                    [text {:style {:padding-right 10
-                                                   :padding-top 8}}
-                                     (str "Sponsored by")]
-                                    [touchablewithoutfeedback
-                                     {:onPress #(.openURL link (:url data))}
-                                     [:> rn/Image {:source (case (:sponsor data)
-                                                             "griffin" griffin
-                                                             "uswitch" uswitch)
-                                                   :style {:width 25
-                                                           :height 25}}]]])])))}]
+                                 [view {:borderBottomColor "#bbb7b6"
+                                        :borderBottomWidth 1
+                                        :width "98%"
+                                        :paddingTop 20
+                                        :paddingBottom 10}
+                                  [text {:style {:font-size 14
+                                                 :font-weight "bold"}} (:time data)]
+                                  [text {:style {:font-size 20}} (:title data)]
+                                  [text {} (:speaker data)]
+                                  [text {:style {:font-size 16}} (:description data)]
+                                  (when (contains? data :sponsor)
+                                    [view {:style {:flexDirection "row"
+                                                   :justify-content "flex-end"}}
+                                     [text {:style {:padding-right 10
+                                                    :padding-top 8}}
+                                      (str "Sponsored by")]
+                                     [touchablewithoutfeedback
+                                      {:onPress #(.openURL link (:url data))}
+                                      [:> rn/Image {:source (case (:sponsor data)
+                                                              "griffin" griffin
+                                                              "uswitch" uswitch)
+                                                    :style {:width 25
+                                                            :height 25}}]]])])))}]
    ])
 
 (defn location-screen
@@ -177,19 +175,26 @@
 
 
 (def tab-navigator
-  (create-tab-navigator
-   (clj->js {:schedule (make-screen schedule-screen)
-             :location (make-screen location-screen)
-             :sponsors (make-screen sponsors-screen)})
-   (clj->js {:defaultNavigationOptions
-             {:tabBarOptions
-              {:activeTintColor "white"
-               :inactiveTintColor "red"
-               :labelStyle {:fontSize 18
-                            :fontWeight "bold"}
-               :style {:backgroundColor "#4b4d63"}}}})))
+  ^js (createBottomTabNavigator
+        (clj->js {:schedule (make-screen schedule-screen)
+                  :location (make-screen location-screen)
+                  :sponsors (make-screen sponsors-screen)})
+        (clj->js {:defaultNavigationOptions
+                  {:tabBarOptions
+                   {:activeTintColor "white"
+                    :inactiveTintColor "red"
+                    :labelStyle {:fontSize 18
+                                 :fontWeight "bold"}
+                    :style {:backgroundColor "#4b4d63"}}}})))
 
-(defn app-root [] [:> (create-app-container tab-navigator) {}])
+(defn app-root
+  []
+  [:> (createAppContainer tab-navigator)])
+
+(defn start
+  {:dev/after-load true}
+  []
+  (shadow-expo/render-root (r/as-element [app-root])))
 
 (defn init []
-  (.registerComponent app-registry "reClojure" #(r/reactify-component app-root)))
+  (start))
