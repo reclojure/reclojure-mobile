@@ -1,6 +1,6 @@
 {:source-paths ["src"]
 
- :dependencies [[cider/cider-nrepl "0.22.4"]
+ :dependencies [[cider/cider-nrepl "0.25.5"]
                 [reagent "0.9.0-rc2"]]
 
  :nrepl {:port 3333}
