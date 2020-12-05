@@ -37,18 +37,25 @@ $ react-native run-android
 ```
 (Note: you'll need to start Android emulator first.)
 
-If you're into emacs:
+### How to start the REPL
+
+If you're into emacs, the following command will start the REPL and
+connect you to it:
 
 <kbd>M-x cider-jack-in-cljs</kbd>
 
-and when prompted for the REPL type, enter `shadow` and when prompted
-for the app type enter `:app`.
+When prompted for the REPL type, enter `shadow` and when prompted for
+the app type enter `:app`. But really, the included `.dir-locals.el`
+should handle the prompting and answering for you.
 
-Any other editor:
+For any other editor:
 
 ```
 $ shadow-cljs watch app
 ```
+
+it'll start the build and the nREPL session on port 3333.
+
 
 ## Production build
 
