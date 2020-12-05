@@ -1,29 +1,31 @@
 # re:Clojure mobile application
 
-For both iOS & Android.
-
 ## How to develop
 
-```
-$ npm install && cd react-native && npm install
-```
+### Install dependencies
 
-If you're into emacs:
-
-<kbd>M-x cider-jack-in-cljs</kbd>
-
-and when prompted for the REPL type, enter `shadow` and when prompted
-for the app type enter `:app`.
-
-
-Any other editor:
+For both iOS & Android
 
 ```
-$ shadow-cljs watch app
+$ (npm install && cd react-native && npm install)
+```
+
+#### iOS
+
+Install cocoapods Ruby gem and pods:
+
+```
+$ cd react-native/ios
+$ bundle install & bundle exec pod install
 ```
 
 ### Start Metro
 
+#### iOS
+
+```
+$ react-native run-ios
+```
 
 #### Android
 
@@ -35,17 +37,17 @@ $ react-native run-android
 ```
 (Note: you'll need to start Android emulator first.)
 
+If you're into emacs:
 
-#### iOS
+<kbd>M-x cider-jack-in-cljs</kbd>
+
+and when prompted for the REPL type, enter `shadow` and when prompted
+for the app type enter `:app`.
+
+Any other editor:
 
 ```
-$ (cd ios && pod install)
-```
-
-and then
-
-```
-$ react-native run-ios
+$ shadow-cljs watch app
 ```
 
 ## Production build
