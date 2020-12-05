@@ -24,6 +24,9 @@ $ shadow-cljs watch app
 
 ### Start Metro
 
+
+#### Android
+
 Then to load the app and start Metro (it'll start it in a separate tab
 of your terminal):
 
@@ -33,7 +36,13 @@ $ react-native run-android
 (Note: you'll need to start Android emulator first.)
 
 
-or
+#### iOS
+
+```
+$ (cd ios && pod install)
+```
+
+and then
 
 ```
 $ react-native run-ios
