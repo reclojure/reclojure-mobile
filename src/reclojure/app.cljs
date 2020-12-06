@@ -1,7 +1,5 @@
 (ns reclojure.app
   (:require ["react-native" :as rn]
-            ["react" :as react]
-            ["create-react-class" :as crc]
             ["react-navigation" :as react-navigation]
             [reagent.core :as r]
             [reclojure.schedule :as schedule]))
